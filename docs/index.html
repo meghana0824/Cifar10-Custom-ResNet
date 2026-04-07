@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CIFAR-10 Custom ResNet — Lakshmimeghana Uppalapati</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#e6edf3;line-height:1.7}
+  header{background:linear-gradient(135deg,#161b22,#21262d);padding:60px 20px;text-align:center;border-bottom:1px solid #30363d}
+  header h1{font-size:2.4rem;font-weight:700;color:#58a6ff;margin-bottom:10px}
+  header p{font-size:1.1rem;color:#8b949e;max-width:700px;margin:0 auto 20px}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .badge{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600}
+  .badge-blue{background:#1f6feb33;color:#58a6ff;border:1px solid #1f6feb}
+  .badge-green{background:#23863633;color:#3fb950;border:1px solid #238636}
+  .badge-purple{background:#8957e533;color:#bc8cff;border:1px solid #8957e5}
+  .container{max-width:1000px;margin:0 auto;padding:40px 20px}
+  .section{margin-bottom:50px}
+  .section h2{font-size:1.5rem;color:#58a6ff;border-bottom:1px solid #30363d;padding-bottom:10px;margin-bottom:24px}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:30px}
+  .metric-card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;text-align:center}
+  .metric-card .value{font-size:2.2rem;font-weight:700;color:#3fb950;margin-bottom:6px}
+  .metric-card .label{font-size:13px;color:#8b949e}
+  .accuracy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .class-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px}
+  .class-card .class-name{font-size:14px;font-weight:600;margin-bottom:8px;color:#e6edf3}
+  .bar-wrap{background:#21262d;border-radius:6px;height:10px;overflow:hidden;margin-bottom:6px}
+  .bar{height:100%;border-radius:6px;transition:width 1s ease}
+  .bar-100{background:#3fb950;width:100%}
+  .bar-84{background:#58a6ff;width:84%}
+  .class-card .pct{font-size:13px;color:#8b949e}
+  .arch-box{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:30px;font-family:'Courier New',monospace;font-size:13px;color:#8b949e;overflow-x:auto}
+  .arch-box .highlight{color:#58a6ff}
+  .arch-box .green{color:#3fb950}
+  .arch-box .purple{color:#bc8cff}
+  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .tech-item{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;text-align:center}
+  .tech-item .tech-name{font-size:14px;font-weight:600;color:#e6edf3;margin-bottom:4px}
+  .tech-item .tech-desc{font-size:12px;color:#8b949e}
+  .training-steps{display:flex;flex-direction:column;gap:12px}
+  .step{display:flex;gap:16px;align-items:flex-start;background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px}
+  .step-num{background:#1f6feb;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .step-content h4{font-size:14px;color:#e6edf3;margin-bottom:4px}
+  .step-content p{font-size:13px;color:#8b949e}
+  .rf-table{width:100%;border-collapse:collapse}
+  .rf-table th{background:#21262d;color:#8b949e;font-size:13px;padding:10px 16px;text-align:left;border-bottom:1px solid #30363d}
+  .rf-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid #21262d;color:#e6edf3}
+  .rf-table tr:hover td{background:#161b22}
+  .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .btn{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block}
+  .btn-primary{background:#238636;color:#fff;border:1px solid #2ea043}
+  .btn-secondary{background:#21262d;color:#58a6ff;border:1px solid #30363d}
+  .btn:hover{opacity:0.85}
+  footer{text-align:center;padding:40px 20px;border-top:1px solid #30363d;color:#8b949e;font-size:13px}
+  footer a{color:#58a6ff;text-decoration:none}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CIFAR-10 Image Classification</h1>
+  <p>Custom ResNet-inspired CNN architecture achieving 92.22% test accuracy in just 24 epochs with minimal overfitting using PyTorch and One Cycle Policy scheduling.</p>
+  <div class="badges">
+    <span class="badge badge-green">92.22% Test Accuracy</span>
+    <span class="badge badge-blue">PyTorch</span>
+    <span class="badge badge-purple">One Cycle Policy</span>
+    <span class="badge badge-blue">Albumentations</span>
+    <span class="badge badge-green">24 Epochs</span>
+  </div>
+  <div class="links" style="justify-content:center;margin-top:24px">
+    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet" class="btn btn-primary">View on GitHub</a>
+    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/train.py" class="btn btn-secondary">View Code</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="section">
+    <h2>Key Results</h2>
+    <div class="metrics">
+      <div class="metric-card"><div class="value">92.22%</div><div class="label">Test Accuracy</div></div>
+      <div class="metric-card"><div class="value">24</div><div class="label">Training Epochs</div></div>
+      <div class="metric-card"><div class="value">1.67%</div><div class="label">Train/Test Gap</div></div>
+      <div class="metric-card"><div class="value">8/10</div><div class="label">Classes at 100%</div></div>
+      <div class="metric-card"><div class="value">40%</div><div class="label">Faster Convergence</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Per-Class Accuracy</h2>
+    <div class="accuracy-grid">
+      <div class="class-card"><div class="class-name">✈ Airplane</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🚗 Automobile</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🐦 Bird</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🐱 Cat</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🦌 Deer</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🐶 Dog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🐸 Frog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🐴 Horse</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">🚢 Ship</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
+      <div class="class-card"><div class="class-name">🚛 Truck</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Model Architecture</h2>
+    <div class="arch-box">
+<span class="highlight">Input</span> (32x32x3 — CIFAR-10 images)
+      |
+<span class="green">Prep Layer</span>   Conv2d(3-64, 3x3) > BN > ReLU        <span class="purple">[RF: 3x3]</span>
+      |
+<span class="green">Layer 1</span>      Conv2d(64-128) > MaxPool > BN > ReLU   <span class="purple">[RF: 11x11]</span>
+             + ResidualBlock(128-128)
+      |
+<span class="green">Layer 2</span>      Conv2d(128-256) > MaxPool > BN > ReLU  <span class="purple">[RF: 27x27]</span>
+      |
+<span class="green">Layer 3</span>      Conv2d(256-512) > MaxPool > BN > ReLU  <span class="purple">[RF: 59x59]</span>
+             + ResidualBlock(512-512)
+      |
+<span class="green">Global Pool</span>  MaxPool(4x4)                           <span class="purple">[RF: 88x88]</span>
+      |
+<span class="highlight">Output</span>       Linear(512-10 classes)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Key Techniques</h2>
+    <div class="training-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Custom Residual Blocks with Skip Connections</h4><p>Enables gradient flow through deeper architectures, prevents vanishing gradients. Receptive fields calculated from 3x3 to 88x88.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Advanced Albumentations Augmentation Pipeline</h4><p>RandomCrop, HorizontalFlip, and CutOut (CoarseDropout 16x16) filled with dataset mean. Significantly improves model generalization.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>One Cycle Policy — Super Convergence</h4><p>Linear annealing with dynamic momentum adjustment (0.95 to 0.85 to 0.95). Peak LR at 30% of training. Achieves 40% faster convergence.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Receptive Field Calculation</h2>
+    <table class="rf-table">
+      <tr><th>Layer</th><th>Receptive Field</th><th>Filters</th></tr>
+      <tr><td>Input Conv (Prep)</td><td>3x3</td><td>64</td></tr>
+      <tr><td>After Layer 1 + ResBlock</td><td>11x11</td><td>128</td></tr>
+      <tr><td>After Layer 2</td><td>27x27</td><td>256</td></tr>
+      <tr><td>After Layer 3 + ResBlock</td><td>59x59</td><td>512</td></tr>
+      <tr><td>After Global Pool</td><td>88x88</td><td>512</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-name">PyTorch</div><div class="tech-desc">Deep learning framework</div></div>
+      <div class="tech-item"><div class="tech-name">Albumentations</div><div class="tech-desc">Image augmentation</div></div>
+      <div class="tech-item"><div class="tech-name">One Cycle LR</div><div class="tech-desc">LR scheduling</div></div>
+      <div class="tech-item"><div class="tech-name">CIFAR-10</div><div class="tech-desc">60K image dataset</div></div>
+      <div class="tech-item"><div class="tech-name">SGD + Momentum</div><div class="tech-desc">Optimizer</div></div>
+      <div class="tech-item"><div class="tech-name">BatchNorm</div><div class="tech-desc">Training stability</div></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Built by <a href="mailto:ulakshmi081234@gmail.com">Lakshmimeghana Uppalapati</a> &nbsp;|&nbsp;
+  <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet">GitHub Repo</a>
+</footer>
+
+</body>
+</html>
