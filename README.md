@@ -1,6 +1,5 @@
-# CIFAR-10 Image Classification — Custom ResNet Architecture
-
-> Custom ResNet-inspired CNN achieving **92.22% test accuracy** on CIFAR-10 in just 24 epochs. Built with PyTorch using One Cycle Policy scheduling, custom residual blocks, and advanced Albumentations augmentation pipeline.
+## 🌐 Live Demo
+**[View Live Demo →](https://meghana0824.github.io/Cifar10-Custom-ResNet/)**
 
 ---
 
