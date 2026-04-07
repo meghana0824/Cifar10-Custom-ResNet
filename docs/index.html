@@ -26,7 +26,7 @@
   .class-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px}
   .class-card .class-name{font-size:14px;font-weight:600;margin-bottom:8px;color:#e6edf3}
   .bar-wrap{background:#21262d;border-radius:6px;height:10px;overflow:hidden;margin-bottom:6px}
-  .bar{height:100%;border-radius:6px;transition:width 1s ease}
+  .bar{height:100%;border-radius:6px}
   .bar-100{background:#3fb950;width:100%}
   .bar-84{background:#58a6ff;width:84%}
   .class-card .pct{font-size:13px;color:#8b949e}
@@ -35,7 +35,8 @@
   .arch-box .green{color:#3fb950}
   .arch-box .purple{color:#bc8cff}
   .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-  .tech-item{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;text-align:center}
+  .tech-item{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;text-align:center;text-decoration:none;display:block;transition:border-color 0.2s}
+  .tech-item:hover{border-color:#58a6ff}
   .tech-item .tech-name{font-size:14px;font-weight:600;color:#e6edf3;margin-bottom:4px}
   .tech-item .tech-desc{font-size:12px;color:#8b949e}
   .training-steps{display:flex;flex-direction:column;gap:12px}
@@ -46,14 +47,21 @@
   .rf-table{width:100%;border-collapse:collapse}
   .rf-table th{background:#21262d;color:#8b949e;font-size:13px;padding:10px 16px;text-align:left;border-bottom:1px solid #30363d}
   .rf-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid #21262d;color:#e6edf3}
-  .rf-table tr:hover td{background:#161b22}
-  .links{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
-  .btn{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block}
+  .rf-table tr:hover td{background:#21262d}
+  .links{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+  .btn{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;transition:opacity 0.2s}
   .btn-primary{background:#238636;color:#fff;border:1px solid #2ea043}
   .btn-secondary{background:#21262d;color:#58a6ff;border:1px solid #30363d}
-  .btn:hover{opacity:0.85}
+  .btn:hover{opacity:0.8}
+  .file-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .file-link{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;text-decoration:none;display:flex;align-items:center;gap:12px;transition:border-color 0.2s}
+  .file-link:hover{border-color:#58a6ff}
+  .file-icon{font-size:20px}
+  .file-info .file-name{font-size:14px;font-weight:600;color:#58a6ff}
+  .file-info .file-desc{font-size:12px;color:#8b949e}
   footer{text-align:center;padding:40px 20px;border-top:1px solid #30363d;color:#8b949e;font-size:13px}
   footer a{color:#58a6ff;text-decoration:none}
+  footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -68,9 +76,10 @@
     <span class="badge badge-blue">Albumentations</span>
     <span class="badge badge-green">24 Epochs</span>
   </div>
-  <div class="links" style="justify-content:center;margin-top:24px">
-    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet" class="btn btn-primary">View on GitHub</a>
-    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/train.py" class="btn btn-secondary">View Code</a>
+  <div class="links">
+    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet" target="_blank" class="btn btn-primary">View on GitHub</a>
+    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/train.py" target="_blank" class="btn btn-secondary">View train.py</a>
+    <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/model/resnet.py" target="_blank" class="btn btn-secondary">View Model</a>
   </div>
 </header>
 
@@ -90,16 +99,16 @@
   <div class="section">
     <h2>Per-Class Accuracy</h2>
     <div class="accuracy-grid">
-      <div class="class-card"><div class="class-name">✈ Airplane</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🚗 Automobile</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🐦 Bird</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🐱 Cat</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🦌 Deer</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🐶 Dog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🐸 Frog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🐴 Horse</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
-      <div class="class-card"><div class="class-name">🚢 Ship</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
-      <div class="class-card"><div class="class-name">🚛 Truck</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
+      <div class="class-card"><div class="class-name">Airplane</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Automobile</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Bird</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Cat</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Deer</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Dog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Frog</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Horse</div><div class="bar-wrap"><div class="bar bar-100"></div></div><div class="pct">100%</div></div>
+      <div class="class-card"><div class="class-name">Ship</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
+      <div class="class-card"><div class="class-name">Truck</div><div class="bar-wrap"><div class="bar bar-84"></div></div><div class="pct">~84%</div></div>
     </div>
   </div>
 
@@ -146,14 +155,40 @@
   </div>
 
   <div class="section">
+    <h2>Source Code Files</h2>
+    <div class="file-links">
+      <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/train.py" target="_blank" class="file-link">
+        <div class="file-icon">📄</div>
+        <div class="file-info"><div class="file-name">train.py</div><div class="file-desc">Main training script with One Cycle Policy</div></div>
+      </a>
+      <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/model/resnet.py" target="_blank" class="file-link">
+        <div class="file-icon">🧠</div>
+        <div class="file-info"><div class="file-name">model/resnet.py</div><div class="file-desc">Custom ResNet architecture</div></div>
+      </a>
+      <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/model/blocks.py" target="_blank" class="file-link">
+        <div class="file-icon">🔧</div>
+        <div class="file-info"><div class="file-name">model/blocks.py</div><div class="file-desc">Residual block definitions</div></div>
+      </a>
+      <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/data/augmentation.py" target="_blank" class="file-link">
+        <div class="file-icon">🎨</div>
+        <div class="file-info"><div class="file-name">data/augmentation.py</div><div class="file-desc">Albumentations pipeline</div></div>
+      </a>
+      <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet/blob/main/requirements.txt" target="_blank" class="file-link">
+        <div class="file-icon">📦</div>
+        <div class="file-info"><div class="file-name">requirements.txt</div><div class="file-desc">Python dependencies</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
     <h2>Tech Stack</h2>
     <div class="tech-grid">
-      <div class="tech-item"><div class="tech-name">PyTorch</div><div class="tech-desc">Deep learning framework</div></div>
-      <div class="tech-item"><div class="tech-name">Albumentations</div><div class="tech-desc">Image augmentation</div></div>
-      <div class="tech-item"><div class="tech-name">One Cycle LR</div><div class="tech-desc">LR scheduling</div></div>
-      <div class="tech-item"><div class="tech-name">CIFAR-10</div><div class="tech-desc">60K image dataset</div></div>
-      <div class="tech-item"><div class="tech-name">SGD + Momentum</div><div class="tech-desc">Optimizer</div></div>
-      <div class="tech-item"><div class="tech-name">BatchNorm</div><div class="tech-desc">Training stability</div></div>
+      <a href="https://pytorch.org" target="_blank" class="tech-item"><div class="tech-name">PyTorch</div><div class="tech-desc">Deep learning framework</div></a>
+      <a href="https://albumentations.ai" target="_blank" class="tech-item"><div class="tech-name">Albumentations</div><div class="tech-desc">Image augmentation</div></a>
+      <a href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.OneCycleLR.html" target="_blank" class="tech-item"><div class="tech-name">One Cycle LR</div><div class="tech-desc">LR scheduling</div></a>
+      <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank" class="tech-item"><div class="tech-name">CIFAR-10</div><div class="tech-desc">60K image dataset</div></a>
+      <a href="https://pytorch.org/docs/stable/generated/torch.optim.SGD.html" target="_blank" class="tech-item"><div class="tech-name">SGD + Momentum</div><div class="tech-desc">Optimizer</div></a>
+      <a href="https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html" target="_blank" class="tech-item"><div class="tech-name">BatchNorm</div><div class="tech-desc">Training stability</div></a>
     </div>
   </div>
 
@@ -161,7 +196,8 @@
 
 <footer>
   Built by <a href="mailto:ulakshmi081234@gmail.com">Lakshmimeghana Uppalapati</a> &nbsp;|&nbsp;
-  <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet">GitHub Repo</a>
+  <a href="https://github.com/meghana0824/Cifar10-Custom-ResNet" target="_blank">GitHub Repo</a> &nbsp;|&nbsp;
+  <a href="https://linkedin.com/in/lakshmimeghana" target="_blank">LinkedIn</a>
 </footer>
 
 </body>
